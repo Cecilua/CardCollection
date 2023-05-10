@@ -1,4 +1,4 @@
-
+import ecs100.*;
 /**
  * support class for card 
  * each card has a name, monetary value and image. 
@@ -16,9 +16,11 @@ public class Card
     /**
      * Constructor for objects of class Card
      */
-    public Card()
+    public Card(String nm, float val, String img)
     {
         // initialise instance variables
-        
+        this.name = nm;
+        this.value = val; 
+        this.image = img; 
     }
 }

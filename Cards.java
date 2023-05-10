@@ -1,4 +1,5 @@
-
+import java.util.HashMap;
+import ecs100.*;
 /**
  * holds cards in a hashmap
  * allows the user to add a card, find a card, and print all cards. 
@@ -9,7 +10,8 @@
 public class Cards
 {
     // instance variables
-    
+    private HashMap<Integer, Card> cardsMap; // declare the hashmap
+    private int currCardId;
 
     /**
      * Constructor for objects of class Cards
@@ -17,6 +19,18 @@ public class Cards
     public Cards()
     {
         // initialise instance variables
+        cardsMap = new HashMap<Integer, Card>();
         
+        // create some cards (for testing)
+        Card c1 = new Card("Raichu", 0.56f , "raichu.png");
+        Card c2 = new Card("Haunter", 0.42f , "haunter.png");
+        Card c3 = new Card("Teddiursa", 0.25f , "teddiursa.png");
+        
+        // add the cards to the hashmap
+        cardsMap.put(1, c1);
+        cardsMap.put(2, c2);
+        cardsMap.put(3, c3);
+        
+        this.currCardId = 3; // set the current card Id 
     }
 }
