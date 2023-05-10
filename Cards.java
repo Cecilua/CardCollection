@@ -65,4 +65,31 @@ public class Cards
     public Card getCard() {
         return this.currCard;
     }
+    
+    /**
+     * displays all cards in the hashmap 
+     */
+    public void displayAll() {
+        final int STARTX = 147; //  starting x pos of cards
+        int locY = 20; 
+        final int YJUMP = 196; // the ammount the y pos moves per row 
+        final double ROW_NUM = 3; // the number of cards in each row
+        int cardId = 1; // the id of the card to be displayed 
+        
+        // learnt about ceiling function here:
+        // https://www.programiz.com/java-programming/library/math/ceil
+        double rowAmmount = Math.ceil(cardsMap.size() / ROW_NUM); // calculate the ammount of rows 
+        
+        UI.clearGraphics(); // clear the graphics pane 
+        
+        // display all cards 
+        for (int i = 0; i < rowAmmount; i++) {
+            for (int a = 0; a < ROW_NUM || a > cardsMap.size(); a++) {
+                currCard = cardsMap.get(cardId); // get the card instance
+                currCard.displayCard(STARTX*(a+1), locY); // display the card
+                cardId++; // increment cardId 
+            }
+            locY += YJUMP; // update y pos 
+        }
+    }
 }

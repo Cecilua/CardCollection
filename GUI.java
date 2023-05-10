@@ -21,6 +21,7 @@ public class GUI
         UI.initialise();
         UI.addButton("add a card", this::addCard);
         UI.addButton("find a card", this::findCard);
+        UI.addButton("show collection", cards::displayAll); 
         UI.addButton("quit", UI::quit);
     }
     
@@ -29,8 +30,8 @@ public class GUI
      */
     public void addCard() {
         // set constants 
-        final double MIN_VALUE = 0; 
-        final double MAX_VALUE = 10000000;
+        final double MIN_VALUE = 0; // min card market value
+        final double MAX_VALUE = 10000000; // max card market value
         
         // ask the user for details 
         String nm = UI.askString("name: ").trim().toLowerCase();
@@ -49,6 +50,7 @@ public class GUI
      */
     public double isValidDouble(String question, double min, double max) {
         double number = min; // innitialise the number as the minimum 
+        // keep asking for a number until it is greater than the min and less than the max
         while (number <= min || number >= max) {
             number = UI.askDouble(question); 
             if (number <= min) {
@@ -57,22 +59,25 @@ public class GUI
                 UI.println("number must be less than " + max); 
             }
         }
-        return number; 
+        return number; // once a valid number is given, return number
     }
     
     /**
      * search for a card, and display if found
      */
     public void findCard() {
-        String cardName = UI.askString("search card name: ").trim();
+        UI.clearGraphics(); // clear the graphics pane 
+        
+        String cardName = UI.askString("search card name: ").trim(); // ask user for the card name
         if (cards.findCard(cardName)) {
-            UI.println("card found!"); 
+            // if card is found, show its details
+            UI.println("card found!");
             card = cards.getCard();
             UI.println("----- " + card.getName() + " -----");
             UI.println("market value: $" + card.getValue());
-            card.displayCard();
+            card.displayCard(100, 100);
         } else {
-            UI.println("card not found :("); 
+            UI.println("card not found :("); // if card isnt found --> error message
         }
     }
 }

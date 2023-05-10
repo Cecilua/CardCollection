@@ -55,14 +55,12 @@ public class Card
     }
     
     /**
-     * display card image on GUI
+     * takes left and top coordinates and displays card image on GUI
      */
-    public void displayCard() {
-        int x = 100; 
-        int y = 100;
-        final double WIDTH = 253;
-        final double HEIGHT = 351;
+    public void displayCard(int locX, int locY) {
+        final double WIDTH = 127;
+        final double HEIGHT = 176;
         
-        UI.drawImage(this.image, x, y, WIDTH, HEIGHT);
+        UI.drawImage(this.image, locX, locY, WIDTH, HEIGHT);
     }
 }
