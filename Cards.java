@@ -12,6 +12,8 @@ public class Cards
     // instance variables
     private HashMap<Integer, Card> cardsMap; // declare the hashmap
     private int currCardId;
+    
+    private Card currCard; // store the instance of the found card
 
     /**
      * Constructor for objects of class Cards
@@ -40,5 +42,27 @@ public class Cards
     public void addCard(String nm, double val, String img) {
         currCardId++; // increment card id 
         cardsMap.put(currCardId, new Card(nm, val, img));
+    }
+    
+    /**
+     *  looks for card in hashmap (by name) 
+     *  @return boolean if found
+     */
+    public boolean findCard(String name) {
+        for (int cardId : cardsMap.keySet()) {
+            if (cardsMap.get(cardId).getName().toLowerCase().equals(name.toLowerCase())) {
+                currCard = cardsMap.get(cardId); // stores the found card
+                return true;
+            }
+        }
+        return false; // if no card found 
+    }
+    
+    /**
+     * getter for current card 
+     * @return Card (the found card instance) 
+     */
+    public Card getCard() {
+        return this.currCard;
     }
 }

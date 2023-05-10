@@ -9,6 +9,7 @@ public class GUI
 {
     // instance variables
     private Cards cards;
+    private Card card;
 
     /**
      * Constructor for objects of class GUI
@@ -19,6 +20,7 @@ public class GUI
         cards = new Cards();
         UI.initialise();
         UI.addButton("add a card", this::addCard);
+        UI.addButton("find a card", this::findCard);
         UI.addButton("quit", UI::quit);
     }
     
@@ -31,10 +33,9 @@ public class GUI
         final double MAX_VALUE = 10000000;
         
         // ask the user for details 
-        String nm = UI.askString("name: ").trim();
-        
+        String nm = UI.askString("name: ").trim().toLowerCase();
         double val = isValidDouble("market value: ", MIN_VALUE, MAX_VALUE);
-        
+      
         //add an image to display in GUI
         String img = UIFileChooser.open("choose image file: ");
         
@@ -59,4 +60,19 @@ public class GUI
         return number; 
     }
     
+    /**
+     * search for a card, and display if found
+     */
+    public void findCard() {
+        String cardName = UI.askString("search card name: ").trim();
+        if (cards.findCard(cardName)) {
+            UI.println("card found!"); 
+            card = cards.getCard();
+            UI.println("----- " + card.getName() + " -----");
+            UI.println("market value: $" + card.getValue());
+            card.displayCard();
+        } else {
+            UI.println("card not found :("); 
+        }
+    }
 }
