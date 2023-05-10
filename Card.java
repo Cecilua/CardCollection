@@ -10,13 +10,13 @@ public class Card
 {
     // instance variables 
     private String name; // name of the card
-    private float value; // cards market value 
+    private double value; // cards market value 
     private String image; // the cards image 
 
     /**
      * Constructor for objects of class Card
      */
-    public Card(String nm, float val, String img)
+    public Card(String nm, double val, String img)
     {
         // initialise instance variables
         this.name = nm;

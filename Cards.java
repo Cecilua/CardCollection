@@ -22,9 +22,9 @@ public class Cards
         cardsMap = new HashMap<Integer, Card>();
         
         // create some cards (for testing)
-        Card c1 = new Card("Raichu", 0.56f , "raichu.png");
-        Card c2 = new Card("Haunter", 0.42f , "haunter.png");
-        Card c3 = new Card("Teddiursa", 0.25f , "teddiursa.png");
+        Card c1 = new Card("Raichu", 0.56 , "raichu.png");
+        Card c2 = new Card("Haunter", 0.42 , "haunter.png");
+        Card c3 = new Card("Teddiursa", 0.25 , "teddiursa.png");
         
         // add the cards to the hashmap
         cardsMap.put(1, c1);
@@ -32,5 +32,13 @@ public class Cards
         cardsMap.put(3, c3);
         
         this.currCardId = 3; // set the current card Id 
+    }
+    
+    /**
+     *  add a card to the hashmap
+     */
+    public void addCard(String nm, double val, String img) {
+        currCardId++; // increment card id 
+        cardsMap.put(currCardId, new Card(nm, val, img));
     }
 }
