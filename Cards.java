@@ -1,4 +1,7 @@
 import java.util.HashMap;
+// learnt about sets here 
+// https://www.w3schools.blog/get-list-of-keys-from-hashmap-java#:~:text=We%20can%20use%20keySet(),the%20keys%20in%20this%20map.
+import java.util.Set;
 import ecs100.*;
 /**
  * holds cards in a hashmap
@@ -12,6 +15,8 @@ public class Cards
     // instance variables
     private HashMap<Integer, Card> cardsMap; // declare the hashmap
     private int currCardId;
+    
+    private int foundCardId; // the id of the found card 
     
     private Card currCard; // store the instance of the found card
 
@@ -51,7 +56,9 @@ public class Cards
     public boolean findCard(String name) {
         for (int cardId : cardsMap.keySet()) {
             if (cardsMap.get(cardId).getName().toLowerCase().equals(name.toLowerCase())) {
-                currCard = cardsMap.get(cardId); // stores the found card
+                
+                foundCardId = cardId; // stores the found card id 
+                // currCard = cardsMap.get(cardId); // stores the found card
                 return true;
             }
         }
@@ -59,37 +66,35 @@ public class Cards
     }
     
     /**
-     * getter for current card 
-     * @return Card (the found card instance) 
+     * getter for foundCardId
+     * @return int (the foundCardId) 
      */
-    public Card getCard() {
-        return this.currCard;
+    public int getFoundCardId() {
+        return this.foundCardId;
     }
     
     /**
-     * displays all cards in the hashmap 
+     * getter for size
+     * @return int (the hashmap size) 
      */
-    public void displayAll() {
-        final int STARTX = 147; //  starting x pos of cards
-        int locY = 20; 
-        final int YJUMP = 196; // the ammount the y pos moves per row 
-        final double ROW_NUM = 3; // the number of cards in each row
-        int cardId = 1; // the id of the card to be displayed 
-        
-        // learnt about ceiling function here:
-        // https://www.programiz.com/java-programming/library/math/ceil
-        double rowAmmount = Math.ceil(cardsMap.size() / ROW_NUM); // calculate the ammount of rows 
-        
-        UI.clearGraphics(); // clear the graphics pane 
-        
-        // display all cards 
-        for (int i = 0; i < rowAmmount; i++) {
-            for (int a = 1; a < ROW_NUM || a > cardsMap.size(); a++) {
-                currCard = cardsMap.get(cardId); // get the card instance
-                currCard.displayCard(STARTX*(a+1), locY); // display the card
-                cardId++; // increment cardId 
-            }
-            locY += YJUMP; // update y pos 
-        }
+    public int getSize() {
+        return cardsMap.size(); 
+    }
+    
+    /**
+     * getter for hashmap keys 
+     * @return Set (the set of all the keys) 
+     */
+    public Set getKeySet() {
+        return cardsMap.keySet(); 
+    } 
+    
+    /**
+     * takes in a cardId (the key of the card) 
+     * @return Card (the found card instance) 
+     */
+    public Card getCard(int cardId) {
+        currCard = cardsMap.get(cardId); // gets the card from the card Id 
+        return this.currCard;
     }
 }

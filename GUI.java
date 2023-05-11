@@ -21,7 +21,7 @@ public class GUI
         UI.initialise();
         UI.addButton("add a card", this::addCard);
         UI.addButton("find a card", this::findCard);
-        UI.addButton("show collection", cards::displayAll); 
+        UI.addButton("show collection", this::displayAll); 
         UI.addButton("quit", UI::quit);
         
         // set up mouse 
@@ -75,12 +75,47 @@ public class GUI
         if (cards.findCard(cardName)) {
             // if card is found, show its details
             UI.println("card found!");
-            card = cards.getCard();
+            card = cards.getCard(cards.getFoundCardId());
             UI.println("----- " + card.getName() + " -----");
             UI.println("market value: $" + card.getValue());
             card.displayCard(100, 100);
         } else {
             UI.println("card not found :("); // if card isnt found --> error message
+        }
+    }
+    
+    /**
+     * displays all cards in the collection 
+     */
+    public void displayAll() {
+        UI.clearGraphics(); // clear the graphics pane 
+        
+        final int STARTX = 147; //  starting x pos of cards
+        int locY = 20; 
+        final int YJUMP = 196; // the ammount the y pos moves per row 
+        final double ROW_NUM = 3; // the number of cards in each row
+        int cardId = 1; // the id of the card to be displayed 
+        
+        // learnt about ceiling function here:
+        // https://www.programiz.com/java-programming/library/math/ceil
+        double rowAmmount = Math.ceil(cards.getSize() / ROW_NUM); // calculate the ammount of rows 
+        UI.println(rowAmmount); 
+        
+        //a > cards.getSize()
+        // display all cards 
+        for (int i = 0; i < rowAmmount; i++) {
+            for (int a = 1;  a <= ROW_NUM; a++) {
+                if(cardId <= cards.getSize()) {
+                    UI.println("size " + cards.getSize()); 
+                    UI.println("a = " + a); 
+                    UI.println("cardId = " + cardId); 
+                
+                    card = cards.getCard(cardId); // get the card instance
+                    card.displayCard(STARTX*(a), locY); // display the card
+                    cardId++; // increment cardId 
+                }
+            }
+            locY += YJUMP; // update y pos 
         }
     }
     
