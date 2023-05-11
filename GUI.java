@@ -25,7 +25,7 @@ public class GUI
         UI.addButton("quit", UI::quit);
         
         // set up mouse 
-        //UI.setMouseListener(this::doMouse);
+        UI.setMouseListener(this::doMouse);
     }
     
     /**
@@ -106,10 +106,6 @@ public class GUI
         for (int i = 0; i < rowAmmount; i++) {
             for (int a = 1;  a <= ROW_NUM; a++) {
                 if(cardId <= cards.getSize()) {
-                    UI.println("size " + cards.getSize()); 
-                    UI.println("a = " + a); 
-                    UI.println("cardId = " + cardId); 
-                
                     card = cards.getCard(cardId); // get the card instance
                     card.displayCard(STARTX*(a), locY); // display the card
                     cardId++; // increment cardId 
@@ -122,12 +118,17 @@ public class GUI
     /**
      * Callback method to mouse listener 
      */
-    //public void doMouse(String action, double x, double y) { 
-        //if (action.equals("clicked")) { 
-            // for every card in hashmap 
-            
-            //if(x >= ca
-        //}
-    //}
+    public void doMouse(String action, double x, double y) { 
+        if (action.equals("clicked")) { 
+            for (int i = 1; i <= cards.getSize(); i++) {
+                card = cards.getCard(i);
+                if ((x >= card.getLeft()) && x <= card.getRight() && y >= card.getTop() && y<= card.getBottom()) {
+                    UI.println("clicked on: " + card.getName()); 
+                } else {
+                    //UI.println("nothing happened!"); 
+                }
+            }
+        }
+    }
     
 }
