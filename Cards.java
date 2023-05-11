@@ -56,9 +56,7 @@ public class Cards
     public boolean findCard(String name) {
         for (int cardId : cardsMap.keySet()) {
             if (cardsMap.get(cardId).getName().toLowerCase().equals(name.toLowerCase())) {
-                
                 foundCardId = cardId; // stores the found card id 
-                // currCard = cardsMap.get(cardId); // stores the found card
                 return true;
             }
         }

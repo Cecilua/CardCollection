@@ -10,6 +10,9 @@ public class GUI
     // instance variables
     private Cards cards;
     private Card card;
+    
+    final int FOUND_X = 200; // the x pos of found card 
+    final int FOUND_Y = 100; // the y pos of found card 
 
     /**
      * Constructor for objects of class GUI
@@ -22,6 +25,7 @@ public class GUI
         UI.addButton("add a card", this::addCard);
         UI.addButton("find a card", this::findCard);
         UI.addButton("show collection", this::displayAll); 
+        UI.addButton("hide all details", this::clearAll); 
         UI.addButton("quit", UI::quit);
         
         // set up mouse 
@@ -75,13 +79,21 @@ public class GUI
         if (cards.findCard(cardName)) {
             // if card is found, show its details
             UI.println("card found!");
-            card = cards.getCard(cards.getFoundCardId());
-            UI.println("----- " + card.getName() + " -----");
-            UI.println("market value: $" + card.getValue());
-            card.displayCard(100, 100);
+            printDetails(cards.getFoundCardId()); 
+            UI.println("you can click on the card to hide its details."); 
+            card.displayCard(FOUND_X, FOUND_Y);
         } else {
             UI.println("card not found :("); // if card isnt found --> error message
         }
+    }
+    
+    /**
+     * takes cardID and prints the cards information 
+     */
+    public void printDetails(int cardID) {
+        card = cards.getCard(cardID);
+        UI.println("\n----- " + card.getName() + " -----");
+        UI.println("market value: $" + card.getValue() + "\n");
     }
     
     /**
@@ -98,10 +110,8 @@ public class GUI
         
         // learnt about ceiling function here:
         // https://www.programiz.com/java-programming/library/math/ceil
-        double rowAmmount = Math.ceil(cards.getSize() / ROW_NUM); // calculate the ammount of rows 
-        UI.println(rowAmmount); 
+        double rowAmmount = Math.ceil(cards.getSize() / ROW_NUM); // calculate the ammount of rows  
         
-        //a > cards.getSize()
         // display all cards 
         for (int i = 0; i < rowAmmount; i++) {
             for (int a = 1;  a <= ROW_NUM; a++) {
@@ -113,7 +123,17 @@ public class GUI
             }
             locY += YJUMP; // update y pos 
         }
+        
+        UI.println("you can click on a card to show its details.");
     }
+    
+    /**
+     * clear the text and graphics pane
+     */
+    public void clearAll() {
+        UI.clearText(); // clear the text pane 
+        UI.clearGraphics(); // clear the graphics pane 
+    } 
     
     /**
      * Callback method to mouse listener 
@@ -123,12 +143,14 @@ public class GUI
             for (int i = 1; i <= cards.getSize(); i++) {
                 card = cards.getCard(i);
                 if ((x >= card.getLeft()) && x <= card.getRight() && y >= card.getTop() && y<= card.getBottom()) {
-                    UI.println("clicked on: " + card.getName()); 
-                } else {
-                    //UI.println("nothing happened!"); 
-                }
+                    // check if the card clicked is the found card
+                    if(card.getLeft() == FOUND_X && card.getTop() == FOUND_Y) {
+                        clearAll(); // hide details 
+                    } else {
+                        printDetails(i); // if card in collection is clicked, print its details
+                    }
+                } 
             }
         }
     }
-    
 }
