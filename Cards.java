@@ -84,7 +84,7 @@ public class Cards
         
         // display all cards 
         for (int i = 0; i < rowAmmount; i++) {
-            for (int a = 0; a < ROW_NUM || a > cardsMap.size(); a++) {
+            for (int a = 1; a < ROW_NUM || a > cardsMap.size(); a++) {
                 currCard = cardsMap.get(cardId); // get the card instance
                 currCard.displayCard(STARTX*(a+1), locY); // display the card
                 cardId++; // increment cardId 

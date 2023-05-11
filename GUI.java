@@ -23,6 +23,9 @@ public class GUI
         UI.addButton("find a card", this::findCard);
         UI.addButton("show collection", cards::displayAll); 
         UI.addButton("quit", UI::quit);
+        
+        // set up mouse 
+        //UI.setMouseListener(this::doMouse);
     }
     
     /**
@@ -80,4 +83,16 @@ public class GUI
             UI.println("card not found :("); // if card isnt found --> error message
         }
     }
+    
+    /**
+     * Callback method to mouse listener 
+     */
+    //public void doMouse(String action, double x, double y) { 
+        //if (action.equals("clicked")) { 
+            // for every card in hashmap 
+            
+            //if(x >= ca
+        //}
+    //}
+    
 }

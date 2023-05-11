@@ -13,6 +13,12 @@ public class Card
     private double value; // cards market value 
     private String image; // the cards image 
     private static final String DEFAULT_IMG = "default_card_back.png";
+    
+    final int WIDTH = 127; // width of card 
+    final int HEIGHT = 176; // height of card
+    
+    private int left; // left of card 
+    private int top; // top of card 
 
     /**
      * Constructor for objects of class Card
@@ -28,6 +34,46 @@ public class Card
         } else {
             this.image = img;  
         }
+    }
+    
+    /**
+     * Constructor overloading for objects of class Card 
+     */
+    public Card(String nm, double val) {
+        // initialise instance variables
+        this(nm, val, null);
+    }
+    
+    /**
+     * getter for left 
+     * @return int the left pos of card 
+     */
+    public int getLeft() {
+        return this.left; 
+    }
+    
+    /**
+     * getter for top 
+     * @return int the top pos of card 
+     */
+    public int getTop() {
+        return this.top; 
+    }
+    
+    /**
+     * getter for right 
+     * @return int the right pos of card
+     */
+    public int getRight() {
+        return this.left + WIDTH; 
+    }
+    
+    /**
+     * getter for bottom 
+     * @return int the bottom pos of card
+     */
+    public int getBottom() {
+        return this.top + HEIGHT;
     }
     
     /**
@@ -58,8 +104,8 @@ public class Card
      * takes left and top coordinates and displays card image on GUI
      */
     public void displayCard(int locX, int locY) {
-        final double WIDTH = 127;
-        final double HEIGHT = 176;
+        left = locX; // set left of card
+        top = locY; // set top of card 
         
         UI.drawImage(this.image, locX, locY, WIDTH, HEIGHT);
     }
