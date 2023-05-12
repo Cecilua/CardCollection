@@ -1,7 +1,4 @@
 import java.util.HashMap;
-// learnt about sets here 
-// https://www.w3schools.blog/get-list-of-keys-from-hashmap-java#:~:text=We%20can%20use%20keySet(),the%20keys%20in%20this%20map.
-import java.util.Set;
 import ecs100.*;
 /**
  * holds cards in a hashmap
@@ -64,6 +61,19 @@ public class Cards
     }
     
     /**
+     * checks if a card is already in the hashmap, based on name and value
+     * @return boolean if true 
+     */
+    public boolean inMap(String nm, double val) {
+        for (int cardId : cardsMap.keySet()) {
+            if (cardsMap.get(cardId).getName().toLowerCase().equals(nm.toLowerCase()) && cardsMap.get(cardId).getValue() == val) {
+                return true; // if the card has the same name and image return true 
+            }
+        }
+        return false; // if not a duplicate card 
+    }
+    
+    /**
      * getter for foundCardId
      * @return int (the foundCardId) 
      */
@@ -78,14 +88,6 @@ public class Cards
     public int getSize() {
         return cardsMap.size(); 
     }
-    
-    /**
-     * getter for hashmap keys 
-     * @return Set (the set of all the keys) 
-     */
-    public Set getKeySet() {
-        return cardsMap.keySet(); 
-    } 
     
     /**
      * takes in a cardId (the key of the card) 

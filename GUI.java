@@ -40,6 +40,8 @@ public class GUI
         final double MIN_VALUE = 0; // min card market value
         final double MAX_VALUE = 10000000; // max card market value
         
+        UI.println("\n----- add a card -----");
+        
         // ask the user for details 
         String nm = UI.askString("name: ").trim().toLowerCase();
         double val = isValidDouble("market value: ", MIN_VALUE, MAX_VALUE);
@@ -47,8 +49,13 @@ public class GUI
         //add an image to display in GUI
         String img = UIFileChooser.open("choose image file: ");
         
-        // add the card to the collection
-        cards.addCard(nm, val, img); 
+        if(cards.inMap(nm, val)) {
+            UI.println("this card is already in the collection !!"); 
+        } else {
+            // add the card to the collection
+            cards.addCard(nm, val, img); 
+        }
+        
     }
     
     /**
@@ -75,12 +82,15 @@ public class GUI
     public void findCard() {
         UI.clearGraphics(); // clear the graphics pane 
         
+        UI.println("\n----- find a card -----");
         String cardName = UI.askString("search card name: ").trim(); // ask user for the card name
+        
         if (cards.findCard(cardName)) {
+            UI.sleep(1000); // wait 1 second
             // if card is found, show its details
-            UI.println("card found!");
+            UI.println("\ncard found!");
             printDetails(cards.getFoundCardId()); 
-            UI.println("you can click on the card to hide its details."); 
+            UI.println("click on the card to hide its details."); 
             card.displayCard(FOUND_X, FOUND_Y);
         } else {
             UI.println("card not found :("); // if card isnt found --> error message
@@ -124,7 +134,9 @@ public class GUI
             locY += YJUMP; // update y pos 
         }
         
-        UI.println("you can click on a card to show its details.");
+        UI.println("\n----- your card collection!! -----");
+        
+        UI.println("click on a card to show its details.");
     }
     
     /**
