@@ -61,19 +61,6 @@ public class Cards
     }
     
     /**
-     * checks if a card is already in the hashmap, based on name and value
-     * @return boolean if true 
-     */
-    public boolean inMap(String nm, double val) {
-        for (int cardId : cardsMap.keySet()) {
-            if (cardsMap.get(cardId).getName().toLowerCase().equals(nm.toLowerCase()) && cardsMap.get(cardId).getValue() == val) {
-                return true; // if the card has the same name and image return true 
-            }
-        }
-        return false; // if not a duplicate card 
-    }
-    
-    /**
      * getter for foundCardId
      * @return int (the foundCardId) 
      */

@@ -43,19 +43,19 @@ public class GUI
         UI.println("\n----- add a card -----");
         
         // ask the user for details 
-        String nm = UI.askString("name: ").trim().toLowerCase();
+        String nm = isValidString("name: ").toLowerCase();
         double val = isValidDouble("market value: ", MIN_VALUE, MAX_VALUE);
       
         //add an image to display in GUI
         String img = UIFileChooser.open("choose image file: ");
         
-        if(cards.inMap(nm, val)) {
+        if(cards.findCard(nm)) {
             UI.println("this card is already in the collection !!"); 
         } else {
             // add the card to the collection
             cards.addCard(nm, val, img); 
+            UI.println("card added to collection"); 
         }
-        
     }
     
     /**
@@ -74,6 +74,24 @@ public class GUI
             }
         }
         return number; // once a valid number is given, return number
+    }
+    
+    /**
+     * takes an question 
+     * @return String if valid
+     */
+    public String isValidString(String question) {
+        boolean asking = true; 
+        String string = "";
+        while (asking) {
+            string = UI.askString(question).trim(); // ask user for a string
+            if (string.equals("")){
+                UI.println("you must enter something!"); // error message is string is empty
+            } else {
+                asking = false; // if string is valid, stop asking
+            }
+        }
+        return string;
     }
     
     /**
