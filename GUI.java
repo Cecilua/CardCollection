@@ -1,4 +1,5 @@
-import ecs100.*; 
+import ecs100.*;
+import java.text.DecimalFormat;
 /**
  * class handles GUI functionality
  *
@@ -37,13 +38,16 @@ public class GUI
      */
     public void addCard() {
         // set constants 
-        final double MIN_VALUE = 0; // min card market value
+        final double MIN_VALUE = 0.01; // min card market value
         final double MAX_VALUE = 10000000; // max card market value
+        
+        final int MIN_LENGTH = 3; // min  name length
+        final int MAX_LENGTH = 20; // max name length 
         
         UI.println("\n----- add a card -----");
         
         // ask the user for details 
-        String nm = isValidString("name: ").toLowerCase();
+        String nm = isValidString("name: ", MIN_LENGTH, MAX_LENGTH).toLowerCase();
         double val = isValidDouble("market value: ", MIN_VALUE, MAX_VALUE);
       
         //add an image to display in GUI
@@ -63,48 +67,53 @@ public class GUI
      *  @return double if valid 
      */
     public double isValidDouble(String question, double min, double max) {
-        double number = min; // innitialise the number as the minimum 
-        // keep asking for a number until it is greater than the min and less than the max
-        while (number <= min || number >= max) {
+        final int BUFFER = 1; 
+        double number = min - BUFFER; // innitialise the number as less than the minimum 
+        // keep asking for a number until it is at least the min and at most the max
+        while (number < min || number > max) {
             number = UI.askDouble(question); 
-            if (number <= min) {
-                UI.println("number must be greater than " + min);
-            } else if (number >= max) {
-                UI.println("number must be less than " + max); 
+            if (number < min) {
+                UI.println("number must be at least " + min);
+            } else if (number > max) {
+                UI.println("number must be at most " + max); 
             }
         }
         return number; // once a valid number is given, return number
     }
     
     /**
-     * takes an question 
+     * takes an question, a minimum and maximum character number 
      * @return String if valid
      */
-    public String isValidString(String question) {
+    public String isValidString(String question, int min, int max) {
         boolean asking = true; 
         String string = "";
         while (asking) {
             string = UI.askString(question).trim(); // ask user for a string
             if (string.equals("")){
                 UI.println("you must enter something!"); // error message is string is empty
+            } else if (string.length() < min) {
+                UI.println("you must enter at least " + min + " characters");
+            } else if (string.length() > max) {
+                UI.println("you must enter at most " + max + " characters");
             } else {
                 asking = false; // if string is valid, stop asking
             }
         }
-        return string;
+        return string; // return the string
     }
     
     /**
      * search for a card, and display if found
      */
     public void findCard() {
+        UI.clearText(); // clear the text pane 
         UI.clearGraphics(); // clear the graphics pane 
         
         UI.println("\n----- find a card -----");
         String cardName = UI.askString("search card name: ").trim(); // ask user for the card name
         
         if (cards.findCard(cardName)) {
-            UI.sleep(1000); // wait 1 second
             // if card is found, show its details
             UI.println("\ncard found!");
             printDetails(cards.getFoundCardId()); 
@@ -119,19 +128,25 @@ public class GUI
      * takes cardID and prints the cards information 
      */
     public void printDetails(int cardID) {
+        // learnt about decimal format here: 
+        // https://www.javatpoint.com/how-to-round-double-and-float-up-to-two-decimal-places-in-java
+        // note that this does not actually round the double, only prints it in the rounded format
+        DecimalFormat  dformat = new DecimalFormat("0.00"); // create the decimal format
+        
         card = cards.getCard(cardID);
         UI.println("\n----- " + card.getName() + " -----");
-        UI.println("market value: $" + card.getValue() + "\n");
+        UI.println("market value: $" + dformat.format(card.getValue()) + "\n");
     }
     
     /**
      * displays all cards in the collection 
      */
     public void displayAll() {
+        UI.clearText(); // clear the text pane 
         UI.clearGraphics(); // clear the graphics pane 
         
         final int STARTX = 147; //  starting x pos of cards
-        int locY = 20; 
+        int locY = 20; // y pos of cards 
         final int YJUMP = 196; // the ammount the y pos moves per row 
         final double ROW_NUM = 3; // the number of cards in each row
         int cardId = 1; // the id of the card to be displayed 
@@ -171,7 +186,7 @@ public class GUI
     public void doMouse(String action, double x, double y) { 
         if (action.equals("clicked")) { 
             for (int i = 1; i <= cards.getSize(); i++) {
-                card = cards.getCard(i);
+                card = cards.getCard(i); // get the current card
                 if ((x >= card.getLeft()) && x <= card.getRight() && y >= card.getTop() && y<= card.getBottom()) {
                     // check if the card clicked is the found card
                     if(card.getLeft() == FOUND_X && card.getTop() == FOUND_Y) {
