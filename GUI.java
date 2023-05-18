@@ -112,8 +112,13 @@ public class GUI
         
         UI.println("\n----- find a card -----");
         String cardName = UI.askString("search card name: ").trim(); // ask user for the card name
-        
-        if (cards.findCard(cardName)) {
+        if (cardName.equals("")) {
+            // if user enters nothing --> display whole collection
+            UI.println("\nyou didn't search for anything!");
+            UI.println("displaying whole collection..");
+            UI.sleep(2000); 
+            displayAll();
+        } else if (cards.findCard(cardName)) {
             // if card is found, show its details
             UI.println("\ncard found!");
             printDetails(cards.getFoundCardId()); 
