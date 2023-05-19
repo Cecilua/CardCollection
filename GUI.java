@@ -110,22 +110,29 @@ public class GUI
         UI.clearText(); // clear the text pane 
         UI.clearGraphics(); // clear the graphics pane 
         
-        UI.println("\n----- find a card -----");
-        String cardName = UI.askString("search card name: ").trim(); // ask user for the card name
-        if (cardName.equals("")) {
-            // if user enters nothing --> display whole collection
-            UI.println("\nyou didn't search for anything!");
-            UI.println("displaying whole collection..");
-            UI.sleep(2000); 
-            displayAll();
-        } else if (cards.findCard(cardName)) {
-            // if card is found, show its details
-            UI.println("\ncard found!");
-            printDetails(cards.getFoundCardId()); 
-            UI.println("click on the card to hide its details."); 
-            card.displayCard(FOUND_X, FOUND_Y);
+        // error message if the hashmap is empty
+        if(cards.getSize() == 0) {
+            UI.println("there are no cards to find!!"); 
+            UI.println("you can add cards by clicking the \"add a card\" button");
         } else {
-            UI.println("card not found :("); // if card isnt found --> error message
+            // if the hashmap is not empty --> search for a card
+            UI.println("\n----- find a card -----");
+            String cardName = UI.askString("search card name: ").trim(); // ask user for the card name
+            if (cardName.equals("")) {
+                // if user enters nothing --> display whole collection
+                UI.println("\nyou didn't search for anything!");
+                UI.println("displaying whole collection..");
+                UI.sleep(2000); 
+                displayAll();
+            } else if (cards.findCard(cardName)) {
+                // if card is found, show its details
+                UI.println("\ncard found!");
+                printDetails(cards.getFoundCardId()); 
+                UI.println("click on the card to hide its details."); 
+                card.displayCard(FOUND_X, FOUND_Y);
+            } else {
+                UI.println("card not found :("); // if card isnt found --> error message
+            }
         }
     }
     
@@ -150,31 +157,37 @@ public class GUI
         UI.clearText(); // clear the text pane 
         UI.clearGraphics(); // clear the graphics pane 
         
-        final int STARTX = 147; //  starting x pos of cards
-        int locY = 20; // y pos of cards 
-        final int YJUMP = 196; // the ammount the y pos moves per row 
-        final double ROW_NUM = 3; // the number of cards in each row
-        int cardId = 1; // the id of the card to be displayed 
+        // error message if hashmap is empty 
+        if (cards.getSize() == 0) {
+            UI.println("your collection is.. empty?");
+            UI.println("you can add cards by clicking the \"add a card\" button");
+        } else {
+            // if hashmap is not empty --> display collection 
+            
+            final int STARTX = 147; //  starting x pos of cards
+            int locY = 20; // y pos of cards 
+            final int YJUMP = 196; // the ammount the y pos moves per row 
+            final double ROW_NUM = 3; // the number of cards in each row
+            int cardId = 1; // the id of the card to be displayed 
         
-        // learnt about ceiling function here:
-        // https://www.programiz.com/java-programming/library/math/ceil
-        double rowAmmount = Math.ceil(cards.getSize() / ROW_NUM); // calculate the ammount of rows  
+            // learnt about ceiling function here:
+            // https://www.programiz.com/java-programming/library/math/ceil
+            double rowAmmount = Math.ceil(cards.getSize() / ROW_NUM); // calculate the ammount of rows  
         
-        // display all cards 
-        for (int i = 0; i < rowAmmount; i++) {
-            for (int a = 1;  a <= ROW_NUM; a++) {
-                if(cardId <= cards.getSize()) {
-                    card = cards.getCard(cardId); // get the card instance
-                    card.displayCard(STARTX*(a), locY); // display the card
-                    cardId++; // increment cardId 
+            // display all cards 
+            for (int i = 0; i < rowAmmount; i++) {
+                for (int a = 1;  a <= ROW_NUM; a++) {
+                    if(cardId <= cards.getSize()) {
+                        card = cards.getCard(cardId); // get the card instance
+                        card.displayCard(STARTX*(a), locY); // display the card
+                        cardId++; // increment cardId 
+                    }
                 }
+                locY += YJUMP; // update y pos 
             }
-            locY += YJUMP; // update y pos 
+            UI.println("\n----- your card collection!! -----");
+            UI.println("click on a card to show its details.");
         }
-        
-        UI.println("\n----- your card collection!! -----");
-        
-        UI.println("click on a card to show its details.");
     }
     
     /**
