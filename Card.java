@@ -19,6 +19,8 @@ public class Card {
 
   private int left; // left of card 
   private int top; // top of card 
+  
+  private boolean visible; // if the card is displayed
 
   /**
    * Constructor for objects of class Card.
@@ -97,6 +99,22 @@ public class Card {
   public String getImage() {
     return this.image;
   }
+  
+  /**
+   * getter for visible.
+   * 
+   * @return boolean
+   */
+  public boolean isVisible() {
+    return visible;
+  }
+  
+  /**
+   * setter for visible.
+   */
+  public void setVisible(boolean value) {
+    this.visible = value;
+  }
 
   /**
    * takes left and top coordinates and displays card image on GUI.
@@ -105,5 +123,6 @@ public class Card {
     left = locX; // set left of card
     top = locY; // set top of card 
     UI.drawImage(this.image, locX, locY, WIDTH, HEIGHT); // display the card
+    this.setVisible(true); // set visible to true.
   }
 }

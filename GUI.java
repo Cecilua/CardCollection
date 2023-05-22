@@ -11,12 +11,11 @@ public class GUI {
   // instance variables
   private Cards cards;
   private Card card;
-
-  final int FOUND_X = 200; // the x pos of found card
-  final int FOUND_Y = 100; // the y pos of found card 
+  private final int FOUND_X = 200; // the x pos of found card
+  private final int FOUND_Y = 100; // the y pos of found card 
 
   /**
-   * Constructor for objects of class GUI.
+   * constructor for objects of class GUI.
    */
   public GUI() {
     // initialise instance variables
@@ -45,15 +44,14 @@ public class GUI {
     UI.setDivider(WINDOW_RATIO); // set text to graphics pane ratio
 
     this.help(); // show program instructions on startup 
-
   }
 
   /**
-   * display program intructions. 
+   * displays program intructions. 
    */
   public void help() {
-    UI.clearText(); // clear the text pane 
-    UI.clearGraphics(); // clear the graphics pane 
+    // clear panes
+    this.clearAll();
 
     UI.println("---------------- getting started ----------------");
     UI.println("<-- use the buttons on the left to navigate");
@@ -62,11 +60,11 @@ public class GUI {
   }
 
   /**
-   *  add a card to the collection. 
+   * adds a card to the collection. 
    */
   public void addCard() {
-    UI.clearText(); // clear the text pane 
-    UI.clearGraphics(); // clear the graphics pane 
+    // clear panes
+    this.clearAll();
 
     // set constants 
     final double MIN_VALUE = 0.01; // min card market value
@@ -94,13 +92,13 @@ public class GUI {
   }
 
   /**
-   *  takes an question, a minimum and a maximum number.
+   * takes a question, a minimum and a maximum number.
    *
-   *  @return double if valid 
+   * @return double if valid 
    */
   public double isValidDouble(String question, double min, double max) {
     final int BUFFER = 1;
-    double number = min - BUFFER; // innitialise the number as less than the minimum 
+    double number = min - BUFFER; // initialise the number as less than the minimum 
     // keep asking for a number until it is at least the min and at most the max
     while (number < min || number > max) {
       number = UI.askDouble(question);
@@ -114,34 +112,34 @@ public class GUI {
   }
 
   /**
-   * takes an question, a minimum and maximum character number.
+   * takes a question, a minimum and maximum character number.
    *
    * @return String if valid
    */
   public String isValidString(String question, int min, int max) {
     boolean asking = true;
-    String string = "";
+    String inputStr = "";
     while (asking) {
-      string = UI.askString(question).trim(); // ask user for a string
-      if (string.equals("")) {
-        UI.println("you must enter something!"); // error message is string is empty
-      } else if (string.length() < min) {
+      inputStr = UI.askString(question).trim(); // ask user for a string
+      if (inputStr.equals("")) {
+        UI.println("you must enter something!"); // error message if string is empty
+      } else if (inputStr.length() < min) {
         UI.println("you must enter at least " + min + " characters");
-      } else if (string.length() > max) {
+      } else if (inputStr.length() > max) {
         UI.println("you must enter at most " + max + " characters");
       } else {
         asking = false; // if string is valid, stop asking
       }
     }
-    return string; // return the string
+    return inputStr; // return the input string
   }
 
   /**
-   * search for a card, and display if found.
+   * searches for a card, and display if found.
    */
   public void findCard() {
-    UI.clearText(); // clear the text pane 
-    UI.clearGraphics(); // clear the graphics pane 
+    // clear panes
+    this.clearAll(); 
 
     // error message if the hashmap is empty
     if (cards.getSize() == 0) {
@@ -154,9 +152,9 @@ public class GUI {
       if (cardName.equals("")) {
         // if user enters nothing --> display whole collection
         UI.println("\nyou didn't search for anything!");
-        UI.println("displaying whole collection..");
+        UI.println("displaying whole collection...");
         UI.sleep(1000);
-        displayAll();
+        this.displayAll();
       } else if (cards.findCard(cardName)) {
         // if card is found, show its details
         UI.println("\ncard found!");
@@ -187,19 +185,19 @@ public class GUI {
    * displays all cards in the collection. 
    */
   public void displayAll() {
-    UI.clearText(); // clear the text pane 
-    UI.clearGraphics(); // clear the graphics pane 
+    // clear panes
+    this.clearAll();
 
     // error message if hashmap is empty 
     if (cards.getSize() == 0) {
-      UI.println("your collection is.. empty?");
+      UI.println("your collection is... empty?");
       UI.println("you can add cards by clicking the \"add a card\" button");
     } else {
       // if hashmap is not empty --> display collection 
 
-      final int STARTX = 147; //  starting x pos of cards
+      final int START_X = 147; //  starting x pos of cards
       int locY = 20; // y pos of cards 
-      final int YJUMP = 196; // the ammount the y pos moves per row 
+      final int Y_JUMP = 196; // the ammount the y pos moves per row 
       final double ROW_NUM = 3; // the number of cards in each row
       int cardId = 1; // the id of the card to be displayed 
 
@@ -212,11 +210,11 @@ public class GUI {
         for (int a = 1; a <= ROW_NUM; a++) {
           if (cardId <= cards.getSize()) {
             card = cards.getCard(cardId); // get the card instance
-            card.displayCard(STARTX * (a), locY); // display the card
+            card.displayCard(START_X * (a), locY); // display the card
             cardId++; // increment cardId 
           }
         }
-        locY += YJUMP; // update y pos 
+        locY += Y_JUMP; // update y pos 
       }
       UI.println("----- your card collection!! -----");
       UI.println("click on a card to show its details.");
@@ -224,25 +222,30 @@ public class GUI {
   }
 
   /**
-   * clear the text and graphics pane.
+   * clears the text and graphics pane and set all card visibilities to false.
    */
   public void clearAll() {
     UI.clearText(); // clear the text pane 
     UI.clearGraphics(); // clear the graphics pane 
+    
+    for (int i = 1; i <= cards.getSize(); i++) {
+      card = cards.getCard(i); // get the current card
+      card.setVisible(false); // set card visibility to false. 
+    }
   }
 
   /**
-   * Callback method to mouse listener. 
+   * callback method to mouse listener. 
    */
   public void doMouse(String action, double x, double y) {
     if (action.equals("clicked")) {
       for (int i = 1; i <= cards.getSize(); i++) {
         card = cards.getCard(i); // get the current card
-        if ((x >= card.getLeft()) && x <= card.getRight() 
+        if (card.isVisible() && (x >= card.getLeft()) && x <= card.getRight() 
             && y >= card.getTop() && y <= card.getBottom()) {
           // check if the card clicked is the found card
           if (card.getLeft() == FOUND_X && card.getTop() == FOUND_Y) {
-            clearAll(); // hide details 
+            this.clearAll(); // hide details 
           } else {
             this.printDetails(i); // if card in collection is clicked, print its details
           }
