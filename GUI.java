@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
  * class handles GUI functionality.
  *
  * @author Cecilia Kuntze
- * @version 09/05/23
+ * @version 22/05/23
  */
 
 public class GUI {
@@ -22,20 +22,52 @@ public class GUI {
     // initialise instance variables
     cards = new Cards();
     UI.initialise();
+
+    // add buttons
     UI.addButton("add a card", this::addCard);
     UI.addButton("find a card", this::findCard);
     UI.addButton("show collection", this::displayAll);
     UI.addButton("hide all details", this::clearAll);
     UI.addButton("quit", UI::quit);
+    UI.addButton("help", this::help);
 
     // set up mouse 
     UI.setMouseListener(this::doMouse);
+
+    // window settings
+
+    // set constants
+    final int WINDOW_WIDTH = 1100; // window width  
+    final int WINDOW_HEIGHT = 618; // window height
+    final double WINDOW_RATIO = 0.35; // window ratio 
+
+    UI.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT); // set window size 
+    UI.setDivider(WINDOW_RATIO); // set text to graphics pane ratio
+
+    this.help(); // show program instructions on startup 
+
+  }
+
+  /**
+   * display program intructions. 
+   */
+  public void help() {
+    UI.clearText(); // clear the text pane 
+    UI.clearGraphics(); // clear the graphics pane 
+
+    UI.println("---------------- getting started ----------------");
+    UI.println("<-- use the buttons on the left to navigate");
+    UI.println("\nthen follow the instructions on this column!\n");
+    UI.println("cards (if displayed) will appear on the right -->");
   }
 
   /**
    *  add a card to the collection. 
    */
   public void addCard() {
+    UI.clearText(); // clear the text pane 
+    UI.clearGraphics(); // clear the graphics pane 
+
     // set constants 
     final double MIN_VALUE = 0.01; // min card market value
     final double MAX_VALUE = 10000000; // max card market value
@@ -43,21 +75,21 @@ public class GUI {
     final int MIN_LENGTH = 3; // min  name length
     final int MAX_LENGTH = 20; // max name length 
 
-    UI.println("\n----- add a card -----");
+    UI.println("----- add a card -----");
 
     // ask the user for details 
-    String nm = isValidString("name: ", MIN_LENGTH, MAX_LENGTH).toLowerCase();
-    double val = isValidDouble("market value: ", MIN_VALUE, MAX_VALUE);
+    String nm = this.isValidString("enter name: ", MIN_LENGTH, MAX_LENGTH).toLowerCase();
+    double val = this.isValidDouble("enter market value: ", MIN_VALUE, MAX_VALUE);
 
-    //add an image to display in GUI
+    // add an image to display in GUI
     String img = UIFileChooser.open("choose image file: ");
 
     if (cards.findCard(nm)) {
-      UI.println("this card is already in the collection !!");
+      UI.println("\nthis card is already in the collection !!");
     } else {
       // add the card to the collection
       cards.addCard(nm, val, img);
-      UI.println("card added to collection");
+      UI.println("\ncard added to collection");
     }
   }
 
@@ -117,36 +149,36 @@ public class GUI {
       UI.println("you can add cards by clicking the \"add a card\" button");
     } else {
       // if the hashmap is not empty --> search for a card
-      UI.println("\n----- find a card -----");
+      UI.println("----- find a card -----");
       String cardName = UI.askString("search card name: ").trim(); // ask user for card name
       if (cardName.equals("")) {
         // if user enters nothing --> display whole collection
         UI.println("\nyou didn't search for anything!");
         UI.println("displaying whole collection..");
-        UI.sleep(2000);
+        UI.sleep(1000);
         displayAll();
       } else if (cards.findCard(cardName)) {
         // if card is found, show its details
         UI.println("\ncard found!");
-        printDetails(cards.getFoundCardId());
+        this.printDetails(cards.getFoundCardId());
         UI.println("click on the card to hide its details.");
         card.displayCard(FOUND_X, FOUND_Y);
       } else {
-        UI.println("card not found :("); // if card isnt found --> error message
+        UI.println("\ncard not found :("); // if card isnt found --> error message
       }
     }
   }
 
   /**
-   * takes cardID and prints the cards information. 
+   * takes cardId and prints the cards information. 
    */
-  public void printDetails(int cardID) {
+  public void printDetails(int cardId) {
     // learnt about decimal format here: 
     // https://www.javatpoint.com/how-to-round-double-and-float-up-to-two-decimal-places-in-java
     // note that this does not actually round the double, only prints it in the rounded format
     DecimalFormat dformat = new DecimalFormat("0.00"); // create the decimal format
 
-    card = cards.getCard(cardID);
+    card = cards.getCard(cardId);
     UI.println("\n----- " + card.getName() + " -----");
     UI.println("market value: $" + dformat.format(card.getValue()) + "\n");
   }
@@ -186,7 +218,7 @@ public class GUI {
         }
         locY += YJUMP; // update y pos 
       }
-      UI.println("\n----- your card collection!! -----");
+      UI.println("----- your card collection!! -----");
       UI.println("click on a card to show its details.");
     }
   }
@@ -212,7 +244,7 @@ public class GUI {
           if (card.getLeft() == FOUND_X && card.getTop() == FOUND_Y) {
             clearAll(); // hide details 
           } else {
-            printDetails(i); // if card in collection is clicked, print its details
+            this.printDetails(i); // if card in collection is clicked, print its details
           }
         }
       }

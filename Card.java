@@ -4,7 +4,7 @@ import ecs100.*;
  * each card has a name, monetary value and image. 
  *
  * @author Cecilia Kuntze
- * @version 09/05/2023
+ * @version 22/05/2023
  */
 
 public class Card {
@@ -33,14 +33,6 @@ public class Card {
     } else {
       this.image = img;
     }
-  }
-
-  /**
-   * Constructor overloading for objects of class Card. 
-   */
-  public Card(String nm, double val) {
-    // initialise instance variables
-    this(nm, val, null);
   }
 
   /**
@@ -112,7 +104,6 @@ public class Card {
   public void displayCard(int locX, int locY) {
     left = locX; // set left of card
     top = locY; // set top of card 
-
-    UI.drawImage(this.image, locX, locY, WIDTH, HEIGHT);
+    UI.drawImage(this.image, locX, locY, WIDTH, HEIGHT); // display the card
   }
 }

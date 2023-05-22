@@ -5,7 +5,7 @@ import java.util.HashMap;
  * allows the user to add a card, find a card, and print all cards. 
  *
  * @author Cecilia Kuntze
- * @version 09/05/2023
+ * @version 22/05/2023
  */
 
 public class Cards {
@@ -25,9 +25,9 @@ public class Cards {
     cardsMap = new HashMap<Integer, Card>();
 
     // create some cards (for testing)
-    Card c1 = new Card("Raichu", 0.56, "raichu.png");
-    Card c2 = new Card("Haunter", 0.42, "haunter.png");
-    Card c3 = new Card("Teddiursa", 0.25, "teddiursa.png");
+    Card c1 = new Card("raichu", 0.56, "raichu.png");
+    Card c2 = new Card("haunter", 0.42, "haunter.png");
+    Card c3 = new Card("teddiursa", 0.25, "teddiursa.png");
 
     // add the cards to the hashmap
     cardsMap.put(1, c1);
@@ -52,12 +52,12 @@ public class Cards {
    */
   public boolean findCard(String name) {
     for (int cardId : cardsMap.keySet()) {
-      if (cardsMap.get(cardId).getName().toLowerCase().equals(name.toLowerCase())) {
+      if (cardsMap.get(cardId).getName().equals(name.toLowerCase())) {
         foundCardId = cardId; // stores the found card id 
-        return true;
+        return true; // if card is found return true
       }
     }
-    return false; // if no card found 
+    return false; // if no card found return false
   }
 
   /**
@@ -84,7 +84,7 @@ public class Cards {
    * @return Card (the found card instance) 
    */
   public Card getCard(int cardId) {
-    currCard = cardsMap.get(cardId); // gets the card from the card Id 
+    currCard = cardsMap.get(cardId); // gets a Card from the card Id 
     return this.currCard;
   }
 }
